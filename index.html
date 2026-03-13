@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ananda | Your Zen Space</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enables class-based dark mode
+            theme: {
+                extend: {
+                    colors: {
+                        primary: 'var(--color-primary)',
+                        surface: 'var(--color-surface)',
+                        surfaceAlt: 'var(--color-surface-alt)',
+                        ink: 'var(--color-ink)',
+                        inkMuted: 'var(--color-ink-muted)',
+                        accent: 'var(--color-accent)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Light Mode Variables (Default) */
+        :root {
+            --color-primary: #4b7569;
+            --color-surface: #ffffff;
+            --color-surface-alt: #fcfdfc;
+            --color-ink: #2a3b36;
+            --color-ink-muted: #8b9b94;
+            --color-accent: #e6edea;
+            --color-bg-body: #f3f4f6;
+            --shadow-custom: 0 4px 20px -10px rgba(0, 0, 0, 0.05);
+            --shadow-heavy: 0 20px 60px -15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark Mode Variables */
+        .dark {
+            --color-primary: #6aa896;
+            --color-surface: #1e2624;
+            --color-surface-alt: #161c1a;
+            --color-ink: #e6edea;
+            --color-ink-muted: #8b9b94;
+            --color-accent: #2c3a35;
+            --color-bg-body: #0d1110;
+            --shadow-custom: 0 4px 20px -10px rgba(0, 0, 0, 0.5);
+            --shadow-heavy: 0 20px 60px -15px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background-color: var(--color-bg-body);
+            transition: background-color 0.3s ease;
+        }
+
+        /* Modern Minimalist Scrollbars */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-ink-muted);
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            margin-top: -10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--color-surface);
+            transition: transform 0.2s ease;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: var(--color-accent);
+            border-radius: 2px;
+        }
+
+        /* Utility for dynamic shadow */
+        .shadow-dynamic {
+            box-shadow: var(--shadow-custom);
+        }
+
+        .shadow-heavy {
+            box-shadow: var(--shadow-heavy);
+        }
+    </style>
+</head>
+
+<body
+    class="h-screen w-full flex justify-center items-center overflow-hidden font-sans text-ink selection:bg-accent relative">
+
+    <!-- Mobile Device Container -->
+    <div
+        class="w-full max-w-sm h-full md:h-[85vh] md:rounded-[2.5rem] shadow-heavy md:border-[6px] border-[var(--color-accent)] bg-surfaceAlt relative flex flex-col overflow-hidden transition-colors duration-300">
+
+        <!-- ================= LOGIN OVERLAY ================= -->
+        <div id="login-overlay"
+            class="absolute inset-0 bg-surface z-50 flex flex-col items-center justify-center p-8 transition-opacity duration-500">
+            <div
+                class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 text-primary text-3xl animate-pulse">
+                <i class="fa-solid fa-leaf"></i>
+            </div>
+            <h2 class="font-sans text-2xl font-medium text-ink mb-2">Welcome to Ananda</h2>
+            <p class="text-center text-xs text-inkMuted mb-8 leading-relaxed">Your personal sanctuary for active
+                recovery, daily quests, and zen progress.</p>
+
+            <div class="w-full space-y-4">
+                <div class="relative">
+                    <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-inkMuted"></i>
+                    <input type="text" id="username-input" placeholder="What should we call you?"
+                        class="w-full bg-surfaceAlt border border-accent rounded-2xl py-4 pl-12 pr-4 text-sm text-ink focus:outline-none focus:border-primary transition-colors"
+                        onkeypress="if(event.key === 'Enter') handleLogin()">
+                </div>
+                <button onclick="handleLogin()"
+                    class="w-full bg-primary text-white font-medium py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform text-sm tracking-wide">
+                    Enter Sanctuary
+                </button>
+            </div>
+
+            <p id="login-error" class="text-xs text-orange-400 mt-4 opacity-0 transition-opacity">Please enter a name.
+            </p>
+        </div>
+
+        <!-- ================= HEADER ================= -->
+        <header
+            class="shrink-0 pt-14 pb-4 px-8 bg-surface/80 backdrop-blur-md sticky top-0 z-20 flex justify-between items-center transition-all duration-300">
+            <div>
+                <h1 id="header-title" class="font-sans text-xl tracking-tight font-medium text-ink">Ananda</h1>
+                <p id="header-subtitle" class="text-[10px] text-primary font-medium tracking-widest uppercase mt-0.5">
+                    Your Zen Space</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()"
+                    class="w-8 h-8 rounded-full bg-accent/50 flex items-center justify-center text-inkMuted hover:text-primary hover:bg-accent transition-colors duration-300"
+                    title="Toggle Dark/Light Mode">
+                    <i id="theme-icon" class="fa-regular fa-moon text-xs"></i>
+                </button>
+                <!-- Streak Button -->
+                <button
+                    class="w-10 h-10 rounded-full bg-accent/50 flex items-center justify-center text-inkMuted hover:text-primary hover:bg-accent hover:scale-105 transition-all duration-300 shadow-sm">
+                    <i class="fa-solid fa-fire text-orange-400"></i> <span id="streak-count"
+                        class="text-[10px] font-bold ml-1 text-ink">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ================= MAIN CONTENT VIEWPORT ================= -->
+        <!-- Attached scroll event listener dynamically -->
+        <main id="main-scroll" class="flex-1 relative bg-surfaceAlt overflow-y-auto hide-scrollbar scroll-smooth"
+            onscroll="handleScroll(this)">
+
+            <!-- SCROLL TO TOP FAB -->
+            <button id="scroll-top-btn" onclick="scrollToTop()"
+                class="fixed md:absolute bottom-[100px] right-6 w-12 h-12 bg-primary text-white rounded-full shadow-lg shadow-primary/30 flex items-center justify-center z-40 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4 hover:scale-110">
+                <i class="fa-solid fa-arrow-up text-sm"></i>
+            </button>
+
+            <!-- ================= SECTION: HOME / PROGRESS ================= -->
+            <section id="sec-home"
+                class="w-full px-6 pt-6 pb-24 animate-fade-in block opacity-100 transition-opacity duration-300">
+
+                <!-- Daily Quote / Vibe -->
+                <div
+                    class="mb-4 p-6 bg-gradient-to-br from-surface to-accent/30 rounded-[28px] shadow-[0_8px_30px_-15px_rgba(75,117,105,0.2)] border border-accent/50 relative overflow-hidden group">
+                    <div
+                        class="absolute -right-6 -top-6 text-6xl text-primary/5 group-hover:rotate-12 transition-transform duration-700">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <h2 class="font-sans text-lg font-medium text-ink mb-1">Good afternoon, <span id="display-username"
+                            class="text-primary">Explorer</span>.</h2>
+                    <p class="text-[11px] text-inkMuted leading-relaxed italic mb-4">"Play is the highest form of
+                        research."</p>
+
+                    <!-- LLM Generated Challenge Placeholder -->
+                    <div class="bg-surface/80 backdrop-blur border border-primary/20 rounded-xl p-4 mb-3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-bolt text-orange-400 text-xs shadow-sm"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-ink">Today's AI
+                                Quest</span>
+                        </div>
+                        <p class="text-xs text-ink font-medium leading-relaxed" id="daily-quest-text">Based on your
+                            Ikigai, today's focus is: Write 300 imperfect words without deleting. Then perform 3 minutes
+                            of Box Breathing.</p>
+                    </div>
+
+                    <div class="mt-3 relative z-10 animate-fade-in group w-full">
+                        <textarea id="quest-reflection" rows="2" placeholder="Reflect on your quest here (optional)..."
+                            class="w-full bg-surface/80 border border-primary/20 rounded-xl p-3 text-[11px] text-ink focus:outline-none focus:border-primary transition-colors resize-none mb-3 shadow-inner"></textarea>
+
+                        <div class="flex flex-col gap-2 relative">
+                            <button id="complete-quest-btn" onclick="startQuest()"
+                                class="w-full bg-primary text-white text-[11px] font-medium tracking-wide uppercase py-3 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+                                <i class="fa-solid fa-check mr-2"></i> Submit & Complete
+                            </button>
+                        </div>
+
+                        <!-- AI Feedback Container (Hidden initially) -->
+                        <div id="quest-feedback-container"
+                            class="mt-4 hidden bg-gradient-to-br from-surfaceAlt to-accent/20 border border-accent/70 rounded-xl p-4 flex-col gap-3 shadow-inner animate-fade-in relative overflow-hidden">
+                            <div class="absolute -right-4 -top-4 text-4xl text-primary/5 rotate-12"><i
+                                    class="fa-solid fa-spa"></i></div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-spa text-primary text-xs"></i>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-ink/70">Zen
+                                    Insight</span>
+                            </div>
+                            <p id="quest-feedback-text"
+                                class="text-[11px] text-ink italic leading-relaxed z-10 relative">Waiting for
+                                reflection...</p>
+                            <div class="flex justify-between mt-1 pt-3 border-t border-accent/40 z-10 relative">
+                                <div class="flex flex-col items-center">
+                                    <span
+                                        class="text-[8px] uppercase tracking-widest text-primary mb-0.5">Internal</span>
+                                    <span id="feedback-cr" class="text-[11px] font-bold text-ink">--</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <span
+                                        class="text-[8px] uppercase tracking-widest text-primary mb-0.5">External</span>
+                                    <span id="feedback-er" class="text-[11px] font-bold text-ink">--</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[8px] uppercase tracking-widest text-primary mb-0.5">Ikigai</span>
+                                    <span id="feedback-iki" class="text-[11px] font-bold text-ink">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Level / SCV Display -->
+                <div class="mb-8 p-5 bg-surface rounded-[24px] shadow-dynamic border border-transparent hover:border-accent transition-all flex items-center justify-between cursor-pointer"
+                    onclick="switchTab('calc', document.querySelector('.nav-btn:nth-child(2)'))">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-accent/40 rounded-full flex flex-col items-center justify-center text-primary relative">
+                            <svg class="absolute inset-0 w-full h-full transform -rotate-90">
+                                <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" fill="none"
+                                    class="opacity-20" />
+                                <circle id="scv-progress-ring" cx="24" cy="24" r="22" stroke="currentColor"
+                                    stroke-width="2" fill="none" stroke-dasharray="138" stroke-dashoffset="138"
+                                    class="transition-all duration-1000 ease-out" />
+                            </svg>
+                            <span class="text-lg font-serif font-bold leading-none" id="display-level-num">1</span>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-primary uppercase tracking-widest font-bold mb-0.5"
+                                id="display-level-name">The Relaxed</p>
+                            <p class="text-xs text-inkMuted">SCV Score: <span id="display-scv"
+                                    class="font-medium text-ink">0</span>/100</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-inkMuted/40"></i>
+                </div>
+
+                <div class="mb-6 flex justify-between items-end">
+                    <h3 class="font-sans text-lg font-medium text-ink">Your Gallery</h3>
+                    <button
+                        class="text-primary text-[11px] font-medium tracking-widest uppercase hover:opacity-70 transition-opacity">View
+                        All</button>
+                </div>
+
+                <!-- Media Storage Grid -->
+                <!-- Fetches dynamically from Backend/Supabase -->
+                <div class="grid grid-cols-2 gap-4 mb-4" id="gallery-grid">
+                    <!-- Dynamic Items injected here -->
+                </div>
+
+                <!-- Add New Element -->
+                <input type="file" id="media-upload" class="hidden" accept="image/*,audio/*"
+                    onchange="uploadMedia(event)">
+                <div onclick="document.getElementById('media-upload').click()"
+                    class="cursor-pointer h-20 bg-accent/30 rounded-[24px] border border-dashed border-primary/30 flex items-center justify-center gap-3 hover:bg-accent/50 hover:border-primary/50 transition-all mb-8 group">
+                    <div id="upload-btn-icon"
+                        class="w-8 h-8 rounded-full bg-surface shadow-sm flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                    </div>
+                    <span id="upload-btn-text" class="text-xs font-medium text-ink/70">Archive progress or track
+                        audio</span>
+                </div>
+            </section>
+
+            <!-- ================= SECTION: SCV CALC ================= -->
+            <section id="sec-calc"
+                class="w-full p-6 flex-col animate-fade-in hidden opacity-0 transition-opacity duration-300 pb-24 items-center">
+                <div
+                    class="bg-surface p-8 rounded-[24px] shadow-dynamic w-full mt-2 flex flex-col items-center border border-transparent hover:border-accent transition-colors">
+                    <div
+                        class="w-16 h-16 bg-accent/50 text-primary rounded-full flex items-center justify-center text-2xl mb-4 shadow-inner">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <h3 class="font-sans text-xl font-medium text-ink mb-1 text-center">SCV Configurator</h3>
+                    <p class="text-[10px] uppercase tracking-widest text-primary font-bold mb-3 text-center">
+                        Serenity-Clarity Value</p>
+                    <p class="text-xs text-inkMuted mb-8 leading-relaxed text-center max-w-[260px]">A dynamic metric
+                        linking your internal state to external real-world action to forge your unique path.</p>
+
+                    <div class="space-y-8 w-full text-left">
+
+                        <!-- Ikigai Assessment (For LLM) -->
+                        <div class="bg-surfaceAlt p-5 rounded-xl border border-accent">
+                            <label
+                                class="block text-[13px] font-medium text-ink tracking-wide mb-2 flex justify-between">
+                                Defining Reality
+                                <i class="fa-solid fa-robot text-primary/50 text-xs" title="Processed by AI"></i>
+                            </label>
+                            <p class="text-[10px] text-inkMuted mb-4 leading-tight">Explicitly outline your Ikigai (True
+                                Purpose) and your current massive blockers. The Zen Bot customizes daily challenges
+                                against this thesis.</p>
+
+                            <textarea id="ikigai-text" rows="3" placeholder="I am working towards..."
+                                class="w-full bg-surface border border-accent/50 rounded-lg p-3 text-sm text-ink focus:outline-none focus:border-primary transition-colors resize-none mb-3"></textarea>
+
+                            <label
+                                class="block text-[11px] font-medium text-ink tracking-widest uppercase mb-2 mt-4">Self-Assessed
+                                Progress Score</label>
+                            <select id="ikigai-select"
+                                class="w-full bg-surface border border-accent/50 rounded-lg p-3 text-sm text-ink focus:outline-none focus:border-primary transition-colors appearance-none cursor-pointer shadow-sm">
+                                <option value="1">1: Drifting (Seeking purpose)</option>
+                                <option value="2">2: Exploring (Trying new paths)</option>
+                                <option value="3">3: Grounded (Found direction)</option>
+                                <option value="4">4: Aligned (Living purposefully)</option>
+                                <option value="5">5: Transcendent (In pure flow)</option>
+                            </select>
+                        </div>
+
+                        <!-- Range Sliders -->
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between items-end mb-3">
+                                    <label class="text-[12px] font-medium text-ink tracking-wide">Internal
+                                        Reality</label>
+                                    <span class="text-lg font-serif text-primary opacity-80" id="cr-val">5</span>
+                                </div>
+                                <input type="range" id="range-cr" min="1" max="10" value="5"
+                                    class="w-full relative z-10"
+                                    oninput="document.getElementById('cr-val').innerText = this.value">
+                                <div
+                                    class="flex justify-between text-[9px] text-inkMuted mt-2 uppercase tracking-widest opacity-60">
+                                    <span>Clouded</span>
+                                    <span>Clear</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-end mb-3">
+                                    <label class="text-[12px] font-medium text-ink tracking-wide">External
+                                        Contribution</label>
+                                    <span class="text-lg font-serif text-primary opacity-80" id="er-val">5</span>
+                                </div>
+                                <input type="range" id="range-er" min="1" max="10" value="5"
+                                    class="w-full relative z-10"
+                                    oninput="document.getElementById('er-val').innerText = this.value">
+                                <div
+                                    class="flex justify-between text-[9px] text-inkMuted mt-2 uppercase tracking-widest opacity-60">
+                                    <span>Passive</span>
+                                    <span>Active Effort</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <button onclick="calculateSCV()"
+                                class="w-full bg-ink hover:bg-primary text-surface font-light py-4 rounded-full shadow-lg shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1 text-sm tracking-widest uppercase">
+                                Update SCV Metrics
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION: ZEN BOT ================= -->
+            <section id="sec-bot"
+                class="w-full h-full flex flex-col animate-fade-in hidden opacity-0 transition-opacity duration-300 bg-surfaceAlt pb-20">
+                <!-- Messages Area -->
+                <div id="chat-messages"
+                    class="flex-1 overflow-y-auto overflow-x-hidden p-6 pb-32 space-y-6 relative hide-scrollbar">
+                    <div class="text-center text-[10px] uppercase tracking-widest text-inkMuted/60 font-medium my-4">
+                        Today, 09:41 AM</div>
+
+                    <!-- Bot Msg -->
+                    <div class="flex gap-4 animate-fade-in">
+                        <div
+                            class="w-8 h-8 rounded-full bg-accent/60 text-primary flex items-center justify-center shrink-0 mt-1">
+                            <i class="fa-solid fa-spa text-xs"></i>
+                        </div>
+                        <div
+                            class="bg-surface text-ink rounded-2xl rounded-tl-sm px-5 py-4 text-[13px] max-w-[85%] leading-relaxed shadow-dynamic font-light">
+                            Welcome back. Take a slow, deep breath. How may I assist your academic and personal harmony
+                            today?
+                        </div>
+                    </div>
+
+                    <!-- User Msg -->
+                    <div class="flex gap-4 flex-row-reverse animate-fade-in" style="animation-delay: 0.1s;">
+                        <div
+                            class="bg-primary/20 text-ink rounded-2xl rounded-tr-sm px-5 py-4 text-[13px] max-w-[85%] leading-relaxed shadow-sm font-light">
+                            I'm feeling overwhelmed. Need to regain focus.
+                        </div>
+                    </div>
+
+                    <!-- Bot Msg -->
+                    <div class="flex gap-4 animate-fade-in" style="animation-delay: 0.2s;">
+                        <div
+                            class="w-8 h-8 rounded-full bg-accent/60 text-primary flex items-center justify-center shrink-0 mt-1">
+                            <i class="fa-solid fa-spa text-xs"></i>
+                        </div>
+                        <div
+                            class="bg-surface text-ink rounded-2xl rounded-tl-sm px-5 py-4 text-[13px] max-w-[85%] leading-relaxed shadow-dynamic font-light">
+                            I understand. The magnitude of work can crowd the mind. Let us break it down gently. Shall
+                            we open a Flow Timer, or would you prefer a 3-minute grounding meditation first?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area - Fixed within its relative container -->
+                <div
+                    class="fixed md:absolute bottom-[80px] md:bottom-20 left-0 right-0 p-4 bg-gradient-to-t from-surfaceAlt via-surfaceAlt to-transparent z-10 flex justify-center">
+                    <div
+                        class="flex gap-2 w-full max-w-[90%] bg-surface rounded-full shadow-[0_4px_20px_-5px_rgba(0,0,0,0.08)] p-1.5 border border-accent/50">
+                        <button
+                            class="w-10 h-10 rounded-full text-inkMuted hover:text-primary hover:bg-accent/50 transition shrink-0 flex items-center justify-center"><i
+                                class="fa-solid fa-plus text-sm"></i></button>
+                        <input type="text" id="chat-input" placeholder="Share your thoughts..."
+                            class="flex-1 bg-transparent px-2 text-[13px] focus:outline-none text-ink placeholder-inkMuted/50 font-light"
+                            onkeypress="if(event.key === 'Enter') sendMessageToGuide()">
+                        <button onclick="sendMessageToGuide()"
+                            class="w-10 h-10 bg-primary/90 text-white rounded-full flex items-center justify-center shrink-0 shadow-md hover:bg-primary transition">
+                            <i class="fa-solid fa-arrow-up text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Small spacer bottom for chat layout -->
+                <div class="h-20 shrink-0"></div>
+            </section>
+
+            <!-- ================= SECTION: TOOLKIT / BREATHING ================= -->
+            <section id="sec-toolkit"
+                class="w-full p-6 animate-fade-in hidden opacity-0 transition-opacity duration-300 pb-24">
+                <div class="mb-8 text-center pt-2">
+                    <div
+                        class="inline-flex justify-center items-center w-16 h-16 bg-primary/10 rounded-full mb-4 animate-pulse">
+                        <i class="fa-solid fa-wind text-primary text-2xl"></i>
+                    </div>
+                    <h2 class="font-sans text-xl font-medium text-ink tracking-tight">Breathing & Flow</h2>
+                    <p class="text-[11px] text-inkMuted uppercase tracking-widest mt-2">Active recovery tools</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Yoga Nidra Card (Featured) -->
+                    <div onclick="openGuideModal('Yoga Nidra', 'Rest your body, keep your mind awake. Close your eyes and follow the body scan.', '15 Min')"
+                        class="bg-primary rounded-[24px] p-6 shadow-lg shadow-primary/20 relative overflow-hidden group cursor-pointer hover:-translate-y-1 transition-transform border border-transparent">
+                        <div class="absolute -right-10 -bottom-10 text-surface/10 text-9xl"><i
+                                class="fa-solid fa-moon"></i></div>
+                        <div class="flex justify-between items-start mb-6 relative z-10">
+                            <div>
+                                <span
+                                    class="px-2 py-1 bg-surface/20 text-surface text-[9px] uppercase tracking-widest rounded-md font-bold mb-3 inline-block backdrop-blur-sm">Deep
+                                    Rest</span>
+                                <h3 class="text-surface text-lg font-medium tracking-wide">Yoga Nidra</h3>
+                                <p class="text-surface/80 text-xs mt-1">Non-sleep deep rest protocol.</p>
+                            </div>
+                            <div
+                                class="w-12 h-12 bg-surface text-primary rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-play ml-1"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-surface/20 h-1.5 rounded-full relative z-10">
+                            <div class="w-2 rounded-full h-full bg-surface"></div>
+                        </div>
+                        <div class="flex justify-between text-[10px] text-surface/70 mt-2 font-medium relative z-10">
+                            <span>Audio Track</span>
+                            <span>Level 2</span>
+                        </div>
+                    </div>
+
+                    <!-- Box Breathing -->
+                    <div onclick="startBreathingExercise('box')"
+                        class="bg-surface rounded-[24px] p-5 border border-transparent hover:border-accent shadow-dynamic cursor-pointer group flex items-center gap-5 transition-all">
+                        <div
+                            class="w-14 h-14 bg-accent/50 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-surface transition-colors">
+                            <i class="fa-solid fa-square font-light text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-ink">Box Breathing</h4>
+                            <p class="text-[11px] text-inkMuted mt-1 line-clamp-1">Tactical focus and stress relief.</p>
+                        </div>
+                        <i
+                            class="fa-solid fa-play text-xs text-inkMuted/30 group-hover:text-primary transition-all"></i>
+                    </div>
+
+                    <!-- 4-7-8 Breathing -->
+                    <div onclick="startBreathingExercise('478')"
+                        class="bg-surface rounded-[24px] p-5 border border-transparent hover:border-accent shadow-dynamic cursor-pointer group flex items-center gap-5 transition-all">
+                        <div
+                            class="w-14 h-14 bg-accent/50 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-surface transition-colors">
+                            <span class="font-bold font-sans text-lg">4<span class="text-xs opacity-70">7</span>8</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-ink">4-7-8 Sleep Method</h4>
+                            <p class="text-[11px] text-inkMuted mt-1 line-clamp-1">Tranquility before rest.</p>
+                        </div>
+                        <i
+                            class="fa-solid fa-play text-xs text-inkMuted/30 group-hover:text-primary transition-all"></i>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ================= BREATHING EXERCISE OVERLAY MODAL ================= -->
+        <div id="breathing-modal"
+            class="absolute inset-0 bg-surface/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-6 transition-all duration-500 opacity-0 pointer-events-none transform scale-95">
+            <button onclick="closeBreathing()"
+                class="absolute top-12 right-6 w-10 h-10 bg-accent/50 text-ink rounded-full flex items-center justify-center hover:bg-accent transition text-lg"><i
+                    class="fa-solid fa-xmark"></i></button>
+
+            <h2 id="breath-title" class="font-sans text-2xl font-medium text-ink mb-2">Box Breathing</h2>
+            <p id="breath-desc" class="text-xs text-inkMuted mb-12 uppercase tracking-widest font-bold">Focus & Center
+            </p>
+
+            <!-- Animated Breathing Visualizer -->
+            <div class="relative w-48 h-48 flex items-center justify-center mb-16">
+                <!-- Base fixed shape -->
+                <div id="breath-shape-base" class="absolute inset-0 border-2 border-accent/80 rounded-full"></div>
+                <!-- Dynamic expanding shape -->
+                <div id="breath-shape-dynamic"
+                    class="absolute w-20 h-20 bg-primary/20 border-2 border-primary rounded-full transition-all flex items-center justify-center shadow-[0_0_30px_rgba(75,117,105,0.3)]">
+                    <span id="breath-counter" class="text-2xl font-serif text-primary font-bold">4</span>
+                </div>
+            </div>
+
+            <p id="breath-instruction" class="text-xl text-ink font-medium tracking-wide mb-8">Inhale...</p>
+
+            <button onclick="closeBreathing()"
+                class="px-8 py-3 bg-ink text-surface rounded-full text-[11px] uppercase tracking-widest font-bold shadow-lg shadow-ink/20 hover:scale-105 transition-transform">
+                End Session
+            </button>
+        </div>
+
+        <!-- ================= BOTTOM NAVIGATION ================= -->
+        <nav
+            class="shrink-0 bg-surface/90 backdrop-blur-lg border-t border-accent/40 px-6 pt-4 pb-8 flex justify-between items-center z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.02)] transition-colors duration-300">
+            <button onclick="switchTab('home', this)"
+                class="nav-btn w-16 flex flex-col items-center gap-2 text-primary transition-all duration-300 transform scale-105">
+                <i class="fa-solid fa-compass text-[18px]"></i>
+                <span class="text-[9px] font-medium tracking-widest uppercase">Quest</span>
+            </button>
+            <button onclick="switchTab('calc', this)"
+                class="nav-btn w-16 flex flex-col items-center gap-2 text-inkMuted/60 hover:text-inkMuted transition-all duration-300">
+                <i class="fa-solid fa-sliders text-[18px]"></i>
+                <span class="text-[9px] font-medium tracking-widest uppercase">SCV</span>
+            </button>
+            <button onclick="switchTab('bot', this)"
+                class="nav-btn w-16 flex flex-col items-center gap-2 text-inkMuted/60 hover:text-inkMuted transition-all duration-300">
+                <div class="relative">
+                    <i class="fa-solid fa-spa text-[18px]"></i>
+                    <!-- Notification dot -->
+                    <!-- <span class="absolute -top-1 -right-1.5 w-2 h-2 bg-primary rounded-full"></span> -->
+                </div>
+                <span class="text-[9px] font-medium tracking-widest uppercase">Guide</span>
+            </button>
+            <button onclick="switchTab('toolkit', this)"
+                class="nav-btn w-16 flex flex-col items-center gap-2 text-inkMuted/60 hover:text-inkMuted transition-all duration-300">
+                <i class="fa-solid fa-wind text-[18px]"></i>
+                <span class="text-[9px] font-medium tracking-widest uppercase">Breathe</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- ================= INTERFACE & DATA LOGIC ================= -->
+    <script>
+        // API Base configuration
+        const API_URL = 'http://localhost:3000/api';
+
+        // ---------------------------------------------------------
+        // State & Initialization
+        // ---------------------------------------------------------
+
+        // Ensure DOM is fully loaded before initializing
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+        });
+
+        function initApp() {
+            // 1. Theme Check
+            const isDark = localStorage.getItem('anandaTheme') === 'dark';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
+            }
+
+            // 2. Login Check
+            const username = localStorage.getItem('anandaUser');
+            if (username) {
+                // User exists, verify with backend implicitly
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('display-username').innerText = username;
+
+                // Silent auth to sync streak and ID
+                fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.user) {
+                            localStorage.setItem('anandaUserId', data.user.id);
+                            document.getElementById('streak-count').innerText = data.user.streak_count;
+                            loadMediaGallery(); // Fetch real media from backend
+                        }
+                    })
+                    .catch(err => console.error("Backend offline:", err));
+            } else {
+                // First time user
+                document.getElementById('login-overlay').style.display = 'flex';
+            }
+
+            // 3. Streak Check
+            let streak = document.getElementById('streak-count').innerText;
+            if (streak === "0" && localStorage.getItem('anandaStreak')) {
+                document.getElementById('streak-count').innerText = localStorage.getItem('anandaStreak');
+            }
+
+            // 4. Load SCV Data locally pending a sync
+            const cr = localStorage.getItem('anandaInternal') || 5;
+            const er = localStorage.getItem('anandaExternal') || 5;
+            const ikigaiScore = localStorage.getItem('anandaIkigaiScore') || 3;
+            const ikigaiText = localStorage.getItem('anandaIkigaiText') || "";
+
+            document.getElementById('range-cr').value = cr;
+            document.getElementById('cr-val').innerText = cr;
+
+            document.getElementById('range-er').value = er;
+            document.getElementById('er-val').innerText = er;
+
+            document.getElementById('ikigai-select').value = ikigaiScore;
+            document.getElementById('ikigai-text').value = ikigaiText;
+
+            // Render Initial SCV
+            renderSCVToDashboard(calculateScore(cr, er, ikigaiScore));
+
+            // Load Daily Quest if it exists locally
+            const savedQuest = localStorage.getItem('anandaDailyQuest');
+            if (savedQuest) {
+                document.getElementById('daily-quest-text').innerText = savedQuest;
+            }
+        }
+
+        // ---------------------------------------------------------
+        // Core Logic (SCV & Data)
+        // ---------------------------------------------------------
+
+        // Login Handler (Now talks to SQLite Backend!)
+        async function handleLogin() {
+            const input = document.getElementById('username-input').value.trim();
+            const errorText = document.getElementById('login-error');
+            const btn = event.currentTarget;
+
+            if (input.length < 2) {
+                errorText.classList.remove('opacity-0');
+                errorText.innerText = "Please enter a valid name.";
+                return;
+            }
+
+            errorText.classList.add('opacity-0');
+            const ogText = btn.innerText;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting...';
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: input })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.error || 'Server connection failed');
+
+                // Save to localStorage
+                localStorage.setItem('anandaUser', data.user.username);
+                localStorage.setItem('anandaUserId', data.user.id);
+                localStorage.setItem('anandaStreak', data.user.streak_count);
+
+                document.getElementById('display-username').innerText = data.user.username;
+                document.getElementById('streak-count').innerText = data.user.streak_count;
+
+                // Fade out overlay
+                const overlay = document.getElementById('login-overlay');
+                overlay.style.opacity = '0';
+                setTimeout(() => { overlay.style.display = 'none'; }, 500);
+
+            } catch (err) {
+                errorText.innerText = "Backend offline. Are you running the server?";
+                errorText.classList.remove('opacity-0');
+                btn.innerText = ogText;
+                console.error(err);
+            }
+        }
+
+        // Theme Toggle Handler
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('anandaTheme', 'light');
+                icon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('anandaTheme', 'dark');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        }
+
+        // Score Calculation Logic
+        // SCV (Serenity-Clarity Value) out of 100 possible points:
+        // Internal state (out of 40) + External Effort (out of 40) + Ikigai (out of 20)
+        function calculateScore(internalStr, externalStr, ikigaiScoreStr) {
+            const internal = parseInt(internalStr); // 1-10
+            const external = parseInt(externalStr); // 1-10
+            const ikigaiScore = parseInt(ikigaiScoreStr);     // 1-5
+
+            // Math
+            const score = (internal * 4) + (external * 4) + (ikigaiScore * 4);
+            return score > 100 ? 100 : score;
+        }
+
+        function getLevelData(score) {
+            if (score >= 90) return { num: 9, name: 'The Radiant' };
+            if (score >= 80) return { num: 8, name: 'The Insightful' };
+            if (score >= 70) return { num: 7, name: 'The Expressive' };
+            if (score >= 60) return { num: 6, name: 'The Connected' };
+            if (score >= 50) return { num: 5, name: 'The Aligned' };
+            if (score >= 40) return { num: 4, name: 'The Focused' };
+            if (score >= 30) return { num: 3, name: 'The Grounded' };
+            if (score >= 20) return { num: 2, name: 'The Nourished' };
+            return { num: 1, name: 'The Relaxed' };
+        }
+
+        function renderSCVToDashboard(score) {
+            const levelData = getLevelData(score);
+
+            document.getElementById('display-scv').innerText = score;
+            document.getElementById('display-level-num').innerText = levelData.num;
+            document.getElementById('display-level-name').innerText = levelData.name;
+
+            // Animate SVG Ring (138 is roughly 2 * pi * 22 for stroke offset max)
+            const ring = document.getElementById('scv-progress-ring');
+            if (ring) {
+                const percentage = score / 100;
+                const offset = 138 - (percentage * 138);
+                // Tiny timeout ensures animation happens after initial paint
+                setTimeout(() => { ring.style.strokeDashoffset = offset; }, 50);
+            }
+        }
+
+        async function calculateSCV() {
+            // Grab current values
+            const cr = parseInt(document.getElementById('range-cr').value);
+            const er = parseInt(document.getElementById('range-er').value);
+            const ikigaiScore = parseInt(document.getElementById('ikigai-select').value);
+            const ikigaiText = document.getElementById('ikigai-text').value;
+            const userId = localStorage.getItem('anandaUserId');
+
+            // Calculate & render instantly
+            renderSCVToDashboard(calculateScore(cr, er, ikigaiScore));
+
+            const btn = event.currentTarget;
+            const originalText = btn.innerText;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Syncing & Generating Quest...';
+            document.getElementById('daily-quest-text').innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> The AI is forging a new challenge from your parameters...';
+
+            try {
+                // 1. Log SCV to SQLite Backend
+                if (userId) {
+                    await fetch(`${API_URL}/scv`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            user_id: userId,
+                            internal_reality: cr,
+                            external_contribution: er,
+                            ikigai_score: ikigaiScore,
+                            ikigai_text: ikigaiText
+                        })
+                    });
+
+                    // 2. Generate new LLM Quest from backend
+                    const questRes = await fetch(`${API_URL}/quests/generate`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: userId, ikigai_text: ikigaiText })
+                    });
+
+                    if (questRes.ok) {
+                        const questData = await questRes.json();
+                        document.getElementById('daily-quest-text').innerText = questData.quest_text;
+                        localStorage.setItem('anandaDailyQuest', questData.quest_text);
+                        localStorage.setItem('anandaQuestId', questData.quest_id); // Save ID to mark complete later
+                    }
+                }
+
+                // Save locally
+                localStorage.setItem('anandaInternal', cr);
+                localStorage.setItem('anandaExternal', er);
+                localStorage.setItem('anandaIkigaiScore', ikigaiScore);
+                localStorage.setItem('anandaIkigaiText', ikigaiText);
+
+                // Button success UX
+                btn.innerHTML = "Metrics Synced ✓";
+                btn.classList.replace('bg-ink', 'bg-primary');
+                btn.classList.replace('text-surface', 'text-white');
+
+            } catch (err) {
+                console.error("Failed to sync metrics:", err);
+                btn.innerHTML = "Saved Locally ✓ (Offline)";
+            }
+
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove('bg-primary', 'text-white');
+                btn.classList.add('bg-ink', 'text-surface');
+            }, 3000);
+        }
+
+        // ---------------------------------------------------------
+        // Scroll To Top Logic
+        // ---------------------------------------------------------
+        function handleScroll(element) {
+            const btn = document.getElementById('scroll-top-btn');
+            if (element.scrollTop > 150) {
+                btn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            } else {
+                btn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }
+        }
+
+        function scrollToTop() {
+            const mainScroll = document.getElementById('main-scroll');
+            mainScroll.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // ---------------------------------------------------------
+        // Navigation / Tab Switching Logic
+        // ---------------------------------------------------------
+        const titles = {
+            'home': { title: 'Ananda', sub: 'Your Zen Space' },
+            'calc': { title: 'Tuning', sub: 'Subjective Reality' },
+            'bot': { title: 'Zen Guide', sub: 'Interactive Harmony' },
+            'toolkit': { title: 'Breathe', sub: 'Active Recovery' }
+        };
+
+        function switchTab(tabId, btnElement) {
+            const sections = ['home', 'calc', 'bot', 'toolkit'];
+
+            sections.forEach(id => {
+                const el = document.getElementById('sec-' + id);
+                el.classList.add('hidden');
+                el.classList.remove('opacity-100');
+                if (id !== 'home') el.classList.remove('flex'); // Home uses block
+            });
+
+            // Show target section
+            const activeEl = document.getElementById('sec-' + tabId);
+            activeEl.classList.remove('hidden');
+            if (tabId !== 'home') activeEl.classList.add('flex');
+
+            // Allow display swap before opacity animate
+            setTimeout(() => {
+                activeEl.classList.add('opacity-100');
+            }, 20);
+
+            // Update Nav visual states
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-primary', 'scale-105');
+                btn.classList.add('text-inkMuted/60', 'hover:text-inkMuted');
+            });
+            btnElement.classList.remove('text-inkMuted/60', 'hover:text-inkMuted');
+            btnElement.classList.add('text-primary', 'scale-105');
+
+            // Update Header titles
+            const titleEl = document.getElementById('header-title');
+            const subEl = document.getElementById('header-subtitle');
+
+            titleEl.style.opacity = 0;
+            subEl.style.opacity = 0;
+
+            setTimeout(() => {
+                titleEl.innerText = titles[tabId].title;
+                subEl.innerText = titles[tabId].sub;
+                titleEl.style.opacity = 1;
+                subEl.style.opacity = 1;
+            }, 150);
+
+            // Scroll container to top seamlessly upon tab change
+            document.getElementById('main-scroll').scrollTop = 0;
+        }
+
+        // ---------------------------------------------------------
+        // Mock Interactions -> Now Backend Iteractions!
+        // ---------------------------------------------------------
+        async function startQuest() {
+            const btn = document.getElementById('complete-quest-btn') || event.currentTarget;
+            const userId = localStorage.getItem('anandaUserId');
+            const questId = localStorage.getItem('anandaQuestId');
+            const reflectionInput = document.getElementById('quest-reflection');
+            const reflectionText = reflectionInput ? reflectionInput.value.trim() : "";
+
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Analyzing...`;
+            btn.classList.add('pointer-events-none');
+
+            if (reflectionInput) reflectionInput.disabled = true;
+
+            try {
+                if (userId && questId) {
+                    const response = await fetch(`${API_URL}/quests/complete`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: userId, quest_id: questId, reflection_text: reflectionText })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        // Update real streak from server
+                        document.getElementById('streak-count').innerText = data.new_streak;
+                        localStorage.setItem('anandaStreak', data.new_streak);
+
+                        // Parse AI response and update SCV smoothly
+                        if (data.ai_analysis) {
+                            const ai = data.ai_analysis;
+                            const fbContainer = document.getElementById('quest-feedback-container');
+
+                            if (fbContainer) {
+                                fbContainer.classList.remove('hidden');
+                                fbContainer.classList.add('flex');
+                                document.getElementById('quest-feedback-text').innerText = `"${ai.feedback}"`;
+
+                                const formatDelta = (val) => val > 0 ? `+${val}` : (val === 0 ? '-' : val);
+                                document.getElementById('feedback-cr').innerText = formatDelta(ai.cr_delta);
+                                document.getElementById('feedback-er').innerText = formatDelta(ai.er_delta);
+                                document.getElementById('feedback-iki').innerText = formatDelta(ai.ikigai_delta);
+                            }
+
+                            // Adjust local slider states based on returned deltas
+                            let currCr = parseInt(localStorage.getItem('anandaInternal')) || 5;
+                            let currEr = parseInt(localStorage.getItem('anandaExternal')) || 5;
+                            let currIki = parseInt(localStorage.getItem('anandaIkigaiScore')) || 3;
+
+                            currCr = Math.min(10, Math.max(1, currCr + (ai.cr_delta || 0)));
+                            currEr = Math.min(10, Math.max(1, currEr + (ai.er_delta || 0)));
+                            currIki = Math.min(5, Math.max(1, currIki + (ai.ikigai_delta || 0)));
+
+                            localStorage.setItem('anandaInternal', currCr);
+                            localStorage.setItem('anandaExternal', currEr);
+                            localStorage.setItem('anandaIkigaiScore', currIki);
+
+                            // Visually update the range inputs if user navigates there
+                            if (document.getElementById('range-cr')) {
+                                document.getElementById('range-cr').value = currCr;
+                                document.getElementById('cr-val').innerText = currCr;
+                                document.getElementById('range-er').value = currEr;
+                                document.getElementById('er-val').innerText = currEr;
+                                document.getElementById('ikigai-select').value = currIki;
+                            }
+
+                            // Rehydrate the progress wheel
+                            renderSCVToDashboard(calculateScore(currCr, currEr, currIki));
+                        }
+                    }
+                } else {
+                    // Fallback local logic
+                    let streakEl = document.getElementById('streak-count');
+                    let current = parseInt(streakEl.innerText);
+                    streakEl.innerText = current + 1;
+                    localStorage.setItem('anandaStreak', current + 1);
+                }
+
+                btn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> Insight Saved`;
+                btn.classList.replace('bg-primary', 'bg-ink');
+                btn.classList.replace('text-white', 'text-surface');
+
+            } catch (err) {
+                console.error("Failed to complete quest:", err);
+                btn.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i> Offline`;
+                btn.classList.replace('bg-primary', 'bg-ink');
+                btn.classList.replace('text-white', 'text-surface');
+                btn.classList.remove('pointer-events-none');
+                if (reflectionInput) reflectionInput.disabled = false;
+            }
+        }
+
+        // ---------------------------------------------------------
+        // Media Upload & Gallery Logic
+        // ---------------------------------------------------------
+        async function loadMediaGallery() {
+            const userId = localStorage.getItem('anandaUserId');
+            if (!userId) return;
+
+            try {
+                const res = await fetch(`${API_URL}/media/${userId}`);
+                if (!res.ok) throw new Error("Failed to fetch gallery");
+                const data = await res.json();
+
+                const grid = document.getElementById('gallery-grid');
+                grid.innerHTML = '';
+
+                data.gallery.forEach(item => {
+                    let innerContent = '';
+                    if (item.media_type === 'image') {
+                        innerContent = `<img src="${item.media_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80"></div>
+                                        <div class="absolute bottom-4 left-4 text-white">
+                                            <p class="text-xs font-light drop-shadow-md line-clamp-1">${item.title}</p>
+                                        </div>`;
+                    } else {
+                        // Audio style card
+                        innerContent = `<div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white mb-auto mt-2 border border-white/10 group-hover:bg-primary transition-colors">
+                                            <i class="fa-solid fa-music"></i>
+                                        </div>
+                                        <div class="relative z-10 text-white">
+                                            <p class="text-[10px] font-bold tracking-widest uppercase mb-1 text-primary drop-shadow-md">Audio Log</p>
+                                            <p class="text-xs font-light drop-shadow-md line-clamp-1">${item.title}</p>
+                                        </div>`;
+                    }
+
+                    const bgClass = item.media_type === 'image' ? 'bg-accent/40' : 'bg-[#2a3b36] flex-col justify-end p-4';
+
+                    const cardHTML = `
+                        <div onclick="window.open('${item.media_url}', '_blank')" class="relative group cursor-pointer aspect-square ${bgClass} rounded-[24px] overflow-hidden shadow-dynamic hover:shadow-lg transition-all flex items-center justify-center border border-primary/10 animate-fade-in">
+                            ${innerContent}
+                        </div>
+                    `;
+                    grid.insertAdjacentHTML('beforeend', cardHTML);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function uploadMedia(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const userId = localStorage.getItem('anandaUserId');
+            if (!userId) return alert('Please wait for login to sync.');
+
+            const iconEl = document.getElementById('upload-btn-icon');
+            const txtEl = document.getElementById('upload-btn-text');
+
+            iconEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
+            txtEl.innerText = 'Uploading to sanctuary...';
+
+            const formData = new FormData();
+            formData.append('mediaFile', file);
+            formData.append('user_id', userId);
+            formData.append('title', file.name.split('.')[0]); // basic title
+
+            try {
+                const response = await fetch(`${API_URL}/media/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    await loadMediaGallery();
+                } else {
+                    alert('Failed to upload. Max file size maybe?');
+                }
+            } catch (err) {
+                console.error("Upload Error:", err);
+            } finally {
+                iconEl.innerHTML = '<i class="fa-solid fa-plus text-xs"></i>';
+                txtEl.innerText = 'Archive progress or track audio';
+                event.target.value = ''; // reset input
+            }
+        }
+
+        async function sendMessageToGuide() {
+            const inputEl = document.getElementById('chat-input');
+            const msg = inputEl.value.trim();
+            if (!msg) return;
+
+            const chat = document.getElementById('chat-messages');
+
+            // 1. Append User Message
+            chat.insertAdjacentHTML('beforeend', `
+                <div class="flex gap-4 flex-row-reverse animate-fade-in">
+                    <div class="bg-primary/20 text-ink rounded-2xl rounded-tr-sm px-5 py-4 text-[13px] max-w-[85%] leading-relaxed shadow-sm font-light">
+                        ${msg}
+                    </div>
+                </div>
+            `);
+            inputEl.value = '';
+
+            // Scroll chat to bottom continuously
+            const mainScroll = document.getElementById('main-scroll');
+            chat.scrollTop = chat.scrollHeight;
+            mainScroll.scrollTop = mainScroll.scrollHeight;
+
+            // 2. Mock "Typing" Indicator
+            const typingId = 'typing-' + Date.now();
+            chat.insertAdjacentHTML('beforeend', `
+                <div id="${typingId}" class="flex gap-4 animate-fade-in">
+                    <div class="w-8 h-8 rounded-full bg-accent/60 text-primary flex items-center justify-center shrink-0 mt-1">
+                        <i class="fa-solid fa-spa text-xs"></i>
+                    </div>
+                    <div class="bg-surface text-ink/60 rounded-2xl rounded-tl-sm px-5 py-4 text-[13px] max-w-[85%] shadow-dynamic font-light border border-accent flex items-center gap-1">
+                        <div class="w-1.5 h-1.5 bg-primary/60 rounded-full animate-bounce"></div>
+                        <div class="w-1.5 h-1.5 bg-primary/60 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        <div class="w-1.5 h-1.5 bg-primary/60 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                    </div>
+                </div>
+            `);
+            chat.scrollTop = chat.scrollHeight;
+
+            // 3. Fetch from LLM Backend
+            try {
+                const ikigaiText = localStorage.getItem('anandaIkigaiText') || "";
+
+                const response = await fetch(`${API_URL}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg, ikigai_text: ikigaiText })
+                });
+
+                const data = await response.json();
+
+                // Remove typing indicator
+                const typingEl = document.getElementById(typingId);
+                if (typingEl) typingEl.remove();
+
+                // Generate real reply
+                const finalReply = response.ok ? data.reply : "I am disconnected right now. Find stillness within.";
+
+                chat.insertAdjacentHTML('beforeend', `
+                    <div class="flex gap-4 animate-fade-in">
+                        <div class="w-8 h-8 rounded-full bg-accent/60 text-primary flex items-center justify-center shrink-0 mt-1">
+                            <i class="fa-solid fa-spa text-xs"></i>
+                        </div>
+                        <div class="bg-surface text-ink rounded-2xl rounded-tl-sm px-5 py-4 text-[13px] max-w-[85%] leading-relaxed shadow-dynamic font-light border border-accent">
+                            ${finalReply}
+                        </div>
+                    </div>
+                `);
+
+            } catch (err) {
+                const typingEl = document.getElementById(typingId);
+                if (typingEl) typingEl.remove();
+
+                chat.insertAdjacentHTML('beforeend', `
+                    <div class="flex gap-4 animate-fade-in">
+                        <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center shrink-0 mt-1">
+                            <i class="fa-solid fa-triangle-exclamation text-xs"></i>
+                        </div>
+                        <div class="bg-surface text-ink rounded-2xl rounded-tl-sm px-5 py-4 text-[13px] max-w-[85%] leading-relaxed shadow-dynamic font-light border border-accent text-orange-600">
+                            Server offline. Start node server.js first.
+                        </div>
+                    </div>
+                `);
+            }
+
+            setTimeout(() => {
+                chat.scrollTop = chat.scrollHeight;
+                mainScroll.scrollTop = mainScroll.scrollHeight;
+            }, 50);
+        }
+        // ---------------------------------------------------------
+        // Breathing Visualizer Modals
+        // ---------------------------------------------------------
+        let breathInterval;
+
+        function openGuideModal(title, text, status) {
+            // Simple generic modal for audio placeholders like Yoga Nidra
+            alert(`Opening Audio Guide:\n\n${title}\n${text}\n\n(This would load the respective audio file component)`);
+        }
+
+        function startBreathingExercise(type) {
+            const modal = document.getElementById('breathing-modal');
+            const title = document.getElementById('breath-title');
+            const desc = document.getElementById('breath-desc');
+            const dynShape = document.getElementById('breath-shape-dynamic');
+            const baseShape = document.getElementById('breath-shape-base');
+
+            // Show Modal
+            modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+            modal.classList.add('opacity-100', 'scale-100');
+
+            if (type === 'box') {
+                title.innerText = "Box Breathing";
+                desc.innerText = "Focus & Center (4-4-4-4)";
+                dynShape.style.borderRadius = "20px";
+                baseShape.style.borderRadius = "20px";
+                runBreathCycle([
+                    { text: "Inhale", time: 4, scale: '1' },
+                    { text: "Hold", time: 4, scale: '1' },
+                    { text: "Exhale", time: 4, scale: '0.4' },
+                    { text: "Hold", time: 4, scale: '0.4' }
+                ]);
+            } else if (type === '478') {
+                title.innerText = "4-7-8 Fall Asleep Method";
+                desc.innerText = "Tranquility & Rest";
+                dynShape.style.borderRadius = "50%";
+                baseShape.style.borderRadius = "50%";
+                runBreathCycle([
+                    { text: "Inhale", time: 4, scale: '1' },
+                    { text: "Hold", time: 7, scale: '1' },
+                    { text: "Exhale", time: 8, scale: '0.3' }
+                ]);
+            }
+        }
+
+        function closeBreathing() {
+            clearInterval(breathInterval);
+            const modal = document.getElementById('breathing-modal');
+            modal.classList.remove('opacity-100', 'scale-100');
+            modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        }
+
+        function runBreathCycle(phases) {
+            let phaseIdx = 0;
+            let currentTick = phases[0].time;
+
+            const dynShape = document.getElementById('breath-shape-dynamic');
+            const countEl = document.getElementById('breath-counter');
+            const textEl = document.getElementById('breath-instruction');
+
+            const updatePhaseUI = () => {
+                const phase = phases[phaseIdx];
+                textEl.innerText = phase.text;
+                // Transition duration specifically to duration of phase
+                dynShape.style.transitionDuration = `${phase.time}s`;
+                dynShape.style.transform = `scale(${phase.scale === '1' ? 2 : phase.scale})`; // Scale relative to container
+
+                // If it's a hold, we don't change size. Hack: remove transition so it doesn't try to animate.
+                if (phase.text === "Hold") {
+                    dynShape.style.transitionDuration = '0s';
+                }
+            };
+
+            // Init first UI
+            updatePhaseUI();
+            countEl.innerText = currentTick;
+
+            clearInterval(breathInterval);
+            breathInterval = setInterval(() => {
+                currentTick--;
+
+                if (currentTick <= 0) {
+                    phaseIdx = (phaseIdx + 1) % phases.length; // cycle next phase
+                    currentTick = phases[phaseIdx].time;
+                    updatePhaseUI();
+                }
+
+                countEl.innerText = currentTick;
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>
